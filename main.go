@@ -1,23 +1,15 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"os"
-	"strconv"
+	"go_bank/fileops"
 )
 
 const accountBalancefile = "balance.tex"
 
-
-func writeFloatToFile(value float64, fileName string) {
-	valueText := fmt.Sprint(value)
-	os.WriteFile(fileName, []byte(valueText), 0644)
-}
-
 func main() {
 
-	var accountBalance, err = getFloatFromFile(accountBalancefile)
+	var accountBalance, err = fileops.GetFloatFromFile(accountBalancefile)
 
 	if err != nil {
 		fmt.Println("ERROR")
@@ -28,11 +20,7 @@ func main() {
 	fmt.Println("Welcome Go bank!! ")
 
 	for {
-		fmt.Println("Select an option:")
-		fmt.Println("1. Check Balance")
-		fmt.Println("2. Deposit Money")
-		fmt.Println("3. Withdraw Money")
-		fmt.Println("4. Exit")
+		presentOptions()
 
 		var choice int
 		fmt.Scan(&choice)
@@ -52,7 +40,7 @@ func main() {
 			}
 			accountBalance += depositAmount
 			fmt.Println("Balance updated! Updated amount is:", accountBalance)
-			writeFloatToFile(accountBalance, accountBalancefile)
+			fileops.WriteFloatToFile(accountBalance, accountBalancefile)
 		case 3:
 			fmt.Println("Enter the amount to withdraw:")
 
@@ -71,7 +59,7 @@ func main() {
 			}
 			accountBalance -= withdrawalAmount
 			fmt.Println("Withdraw successsfull! Updated balance is:", accountBalance)
-			writeFloatToFile(accountBalance, accountBalancefile)
+			fileops.WriteFloatToFile(accountBalance, accountBalancefile)
 		case 4:
 			fmt.Println("Thank you for using Go Bank! Goodbye!")
 			return
